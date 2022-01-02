@@ -1,0 +1,588 @@
+// API links
+const API_KEY = "api_key=bd95210b0fc359499095f827f48634cf";
+const BASE_URL = 'https://api.themoviedb.org/3';
+const API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&'+API_KEY;
+const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+const searchURL = BASE_URL + '/search/movie?'+API_KEY;
+
+// const requests = {
+//   fetchPopular: `${base_url}/discover/movie?sort_by=popularity.desc&${APIKey}`,
+//   fetchTrending: `${base_url}/discover/movie?primary_release_year=2010&sort_by=vote_average.desc&${APIKey}&language=en-US`,
+//   fetchNetflixOrignals: `${base_url}/discover/tv?${APIKey}&with_networks=213`,
+//   fetchActionMovies: `${base_url}/discover/movie?${APIKey}&with_genres=28`,
+//   fetchComedyMovies: `${base_url}/discover/movie?${APIKey}&with_genres=35`,
+//   fetchHorrorMovies: `${base_url}/discover/movie?${APIKey}&with_genres=27`,
+//   fetchMystryMovies: `${base_url}/discover/movie?${APIKey}&with_genres=9648`,
+//   fetchBestDrama: `${base_url}/discover/movie? ${APIKey}&with_genres=18&primary_release_year=2014`,
+//   fetchTopDrama: `${base_url}/discover/movie? ${APIKey} &with_genres=18&sort_by=vote_average.desc&vote_count.gte=10 `,
+//   fetchDrama: `${base_url}/discover/movie?${APIKey}&with_genres=18`,
+// };
+
+const genres = [
+  {
+    "id": 28,
+    "name": "Action"
+  },
+  {
+    "id": 12,
+    "name": "Adventure"
+  },
+  {
+    "id": 16,
+    "name": "Animation"
+  },
+  {
+    "id": 35,
+    "name": "Comedy"
+  },
+  {
+    "id": 80,
+    "name": "Crime"
+  },
+  {
+    "id": 99,
+    "name": "Documentary"
+  },
+  {
+    "id": 18,
+    "name": "Drama"
+  },
+  {
+    "id": 10751,
+    "name": "Family"
+  },
+  {
+    "id": 14,
+    "name": "Fantasy"
+  },
+  {
+    "id": 36,
+    "name": "History"
+  },
+  {
+    "id": 27,
+    "name": "Horror"
+  },
+  {
+    "id": 10402,
+    "name": "Music"
+  },
+  {
+    "id": 9648,
+    "name": "Mystery"
+  },
+  {
+    "id": 10749,
+    "name": "Romance"
+  },
+  {
+    "id": 878,
+    "name": "Science Fiction"
+  },
+  {
+    "id": 10770,
+    "name": "TV Movie"
+  },
+  {
+    "id": 53,
+    "name": "Thriller"
+  },
+  {
+    "id": 10752,
+    "name": "War"
+  },
+  {
+    "id": 37,
+    "name": "Western"
+  }
+]
+
+// var
+const main = document.getElementById('main');
+const form =  document.getElementById('searchForm');
+const search = document.getElementById('search');
+const tagsEl = document.getElementById('tags');
+
+const prev = document.getElementById('prev')
+const next = document.getElementById('next')
+const current = document.getElementById('current')
+
+var currentPage = 1;
+var nextPage = 2;
+var prevPage = 3;
+var lastUrl = '';
+var totalPages = 100;
+
+
+
+// fixed menu button
+$(window).scroll(function () {
+  if ($(document).scrollTop() > 20) {
+    $(".navigation").addClass("fix-icon");
+  } else {
+    $(".navigation").removeClass("fix-icon");
+  }
+});
+// progress bar
+let scrollPercentage = () => {
+  let scrollProgress = document.getElementById("progress");
+  let progressValue = document.getElementById("progress-value");
+  let pos = document.documentElement.scrollTop;
+  let calcHeight =
+    document.documentElement.scrollHeight -
+    document.documentElement.clientHeight;
+  let scrollValue = Math.round((pos * 100) / calcHeight);
+  scrollProgress.style.background = `conic-gradient(#e70634 ${scrollValue}%, #2b2f38 ${scrollValue}%)`;
+};
+window.onscroll = scrollPercentage;
+window.onload = scrollPercentage;
+
+
+
+// the filter functions
+var selectedGenre = []
+setGenre();
+function setGenre() {
+  tagsEl.innerHTML= '';
+  genres.forEach(genre => {
+      const t = document.createElement('div');
+      t.classList.add('tag');
+      t.id=genre.id;
+      t.innerText = genre.name;
+      t.addEventListener('click', () => {
+          if(selectedGenre.length == 0){
+              selectedGenre.push(genre.id);
+          }else{
+              if(selectedGenre.includes(genre.id)){
+                  selectedGenre.forEach((id, idx) => {
+                      if(id == genre.id){
+                          selectedGenre.splice(idx, 1);
+                      }
+                  })
+              }else{
+                  selectedGenre.push(genre.id);
+              }
+          }
+          console.log(selectedGenre)
+          getMovies(API_URL + '&with_genres='+encodeURI(selectedGenre.join(',')))
+          highlightSelection()
+      })
+      tagsEl.append(t);
+  })
+}
+
+
+function highlightSelection() {
+  const tags = document.querySelectorAll('.tag');
+  tags.forEach(tag => {
+      tag.classList.remove('highlight')
+  })
+  clearBtn()
+  if(selectedGenre.length !=0){   
+      selectedGenre.forEach(id => {
+          const hightlightedTag = document.getElementById(id);
+          hightlightedTag.classList.add('highlight');
+      })
+  }
+
+}
+
+// clear the movies filter 
+function clearBtn(){
+  let clearBtn = document.getElementById('clear');
+  if(clearBtn){
+      clearBtn.classList.add('highlight')
+  }else{
+          
+      let clear = document.createElement('div');
+      clear.classList.add('tag','highlight');
+      clear.id = 'clear';
+      clear.innerText = 'Clear x';
+      clear.addEventListener('click', () => {
+          selectedGenre = [];
+          setGenre();            
+          getMovies(API_URL);
+      })
+      tagsEl.append(clear);
+  }
+  
+}
+
+getMovies(API_URL);
+
+// get the movies 
+function getMovies(url) {
+lastUrl = url;
+  axios.get(url).then(function (response){
+      console.log(response.data.results)
+      if(response.data.results.length !== 0){
+          showMovies(response.data.results);
+          currentPage = response.data.page;
+          nextPage = currentPage + 1;
+          prevPage = currentPage - 1;
+          totalPages = response.data.total_pages;
+
+          current.innerText = currentPage;
+
+          if(currentPage <= 1){
+            prev.classList.add('disabled');
+            next.classList.remove('disabled')
+          }else if(currentPage>= totalPages){
+            prev.classList.remove('disabled');
+            next.classList.add('disabled')
+          }else{
+            prev.classList.remove('disabled');
+            next.classList.remove('disabled')
+          }
+
+          tagsEl.scrollIntoView({behavior : 'smooth'})
+
+      }else{
+          main.innerHTML= `<h1 class="no-results">No Results Found</h1>`
+      }
+     
+  })
+
+}
+
+// display the movies on the screen
+function showMovies(data) {
+  main.innerHTML = '';
+
+  data.forEach(movie => {
+      const {title, poster_path, vote_average, overview, id} = movie;
+      const movieEl = document.createElement('div');
+      movieEl.classList.add('movie');
+      movieEl.innerHTML = `
+           <img src="${poster_path? IMG_URL+poster_path: "http://via.placeholder.com/1080x1580" }" alt="${title}">
+
+          <div class="movie-info">
+              <h3>${title}</h3>
+              <span class="${getColor(vote_average)}">${vote_average}</span>
+          </div>
+
+          <div class="overview">
+
+              <h3>Overview</h3>
+              ${overview}
+              <br/> 
+              <button class="know-more" id="${id}">Know More</button
+          </div>
+      
+      `
+
+      main.appendChild(movieEl);
+
+      document.getElementById(id).addEventListener('click', () => {
+        console.log(id)
+        openNav(movie)
+      })
+  })
+}
+
+// the movie trailer functions
+
+// for the rating
+function getColor(vote) {
+  if(vote>= 8){
+      return 'green'
+  }else if(vote >= 5){
+      return "orange"
+  }else{
+      return 'red'
+  }
+}
+
+// search function
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const searchTerm = search.value;
+  selectedGenre=[];
+  setGenre();
+  if(searchTerm) {
+      getMovies(searchURL+'&query='+searchTerm)
+  }else{
+      getMovies(API_URL);
+  }
+
+})
+
+// the pagination functions
+prev.addEventListener('click', () => {
+if(prevPage > 0){
+  pageCall(prevPage);
+}
+})
+
+next.addEventListener('click', () => {
+if(nextPage <= totalPages){
+  pageCall(nextPage);
+}
+})
+
+function pageCall(page){
+let urlSplit = lastUrl.split('?');
+let queryParams = urlSplit[1].split('&');
+let key = queryParams[queryParams.length -1].split('=');
+if(key[0] != 'page'){
+  let url = lastUrl + '&page='+page
+  getMovies(url);
+}else{
+  key[1] = page.toString();
+  let a = key.join('=');
+  queryParams[queryParams.length -1] = a;
+  let b = queryParams.join('&');
+  let url = urlSplit[0] +'?'+ b
+  getMovies(url);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// popular movies
+// axios.get(requests.fetchPopular).then(function (response) {
+
+//   const headrow = document.getElementById("headrow");
+//   const row = document.createElement("div");
+//   row.className = "row";
+//   row.classList.add("popularrow");
+//   headrow.appendChild(row);
+//   const title = document.createElement("h2");
+//   title.className = "row__title";
+//   title.innerText = "Trending Now";
+//   row.appendChild(title);
+//   const row_posters = document.createElement("div");
+//   row_posters.className = "row__posters";
+//   row.appendChild(row_posters);
+//   response.data.results.forEach(movie => {
+//     const poster = document.createElement("img");
+//     poster.className = "row__posterLarge";
+//     var s2 = movie.id;
+//     poster.id = s2;
+//     poster.src = IMG_URL + movie.poster_path;
+//     row_posters.appendChild(poster);
+
+//   });
+// });
+// axios.get(requests.fetchNetflixOrignals)
+// .then(function (response)  {
+//   const headrow = document.getElementById("headrow");
+//   const row = document.createElement("div");
+//   row.className = "row";
+//   row.classList.add("netflixrow");
+//   headrow.appendChild(row);
+//   const title = document.createElement("h2");
+//   title.className = "row__title";
+//   title.innerText = "NETFLIX ORIGINALS";
+//   row.appendChild(title);
+//   const row_posters = document.createElement("div");
+//   row_posters.className = "row__posters";
+//   row.appendChild(row_posters);
+//   response.data.results.forEach(movie => {
+//     const poster = document.createElement("img");
+//     poster.className = "row__posterLarge";
+//     var s = movie.name.replace(/\s+/g, "");
+//     poster.id = s;
+//     poster.src = IMG_URL + movie.poster_path;
+//     row_posters.appendChild(poster);
+
+//   });
+// });
+
+
+// // top rated 
+// axios.get(requests.fetchActionMovies).then(function(response){
+//   const headrow = document.getElementById("headrow");
+//   const row = document.createElement("div");
+//   row.className = "row";
+//   headrow.appendChild(row);
+//   const title = document.createElement("h2");
+//   title.className = "row__title";
+//   title.innerText = "Action Movies";
+//   row.appendChild(title);
+//   const row_posters = document.createElement("div");
+//   row_posters.className = "row__posters";
+//   row.appendChild(row_posters);
+//   response.data.results.forEach(movie => {
+//     console.log(movie);
+//     const poster = document.createElement("img");
+//     poster.className = "row__posterLarge";
+//     var s2 = movie.id;
+//     poster.id = s2;
+//     poster.src = IMG_URL + movie.poster_path;
+//     row_posters.appendChild(poster);
+
+//   });
+// });
+
+// // comedy
+// axios.get(requests.fetchComedyMovies).then(function(response){
+//   const headrow = document.getElementById("headrow");
+//   const row = document.createElement("div");
+//   row.className = "row";
+//   headrow.appendChild(row);
+//   const title = document.createElement("h2");
+//   title.className = "row__title";
+//   title.innerText = "Comedy Movies";
+//   row.appendChild(title);
+//   const row_posters = document.createElement("div");
+//   row_posters.className = "row__posters";
+//   row.appendChild(row_posters);
+//   response.data.results.forEach(movie => {
+//     console.log(movie);
+//     const poster = document.createElement("img");
+//     poster.className = "row__posterLarge";
+//     var s2 = movie.id;
+//     poster.id = s2;
+//     poster.src = IMG_URL + movie.backdrop_path;
+//     row_posters.appendChild(poster);
+
+//   });
+// });
+// // Horror
+// axios.get(requests.fetchHorrorMovies).then(function(response){
+//   const headrow = document.getElementById("headrow");
+//   const row = document.createElement("div");
+//   row.className = "row";
+//   headrow.appendChild(row);
+//   const title = document.createElement("h2");
+//   title.className = "row__title";
+//   title.innerText = "Horror Movies";
+//   row.appendChild(title);
+//   const row_posters = document.createElement("div");
+//   row_posters.className = "row__posters";
+//   row.appendChild(row_posters);
+//   response.data.results.forEach(movie => {
+//     console.log(movie);
+//     const poster = document.createElement("img");
+//     poster.className = "row__posterLarge";
+//     var s2 = movie.id;
+//     poster.id = s2;
+//     poster.src = IMG_URL + movie.backdrop_path;
+//     row_posters.appendChild(poster);
+
+//   });
+// });
+// // mystery movies
+// axios.get(requests.fetchMystryMovies).then(function(response){
+//   const headrow = document.getElementById("headrow");
+//   const row = document.createElement("div");
+//   row.className = "row";
+//   headrow.appendChild(row);
+//   const title = document.createElement("h2");
+//   title.className = "row__title";
+//   title.innerText = "Mystery Movies";
+//   row.appendChild(title);
+//   const row_posters = document.createElement("div");
+//   row_posters.className = "row__posters";
+//   row.appendChild(row_posters);
+//   response.data.results.forEach(movie => {
+//     console.log(movie);
+//     const poster = document.createElement("img");
+//     poster.className = "row__posterLarge";
+//     var s2 = movie.id;
+//     poster.id = s2;
+//     poster.src = IMG_URL + movie.backdrop_path;
+//     row_posters.appendChild(poster);
+
+//   });
+// });
+// / search
+// $(document).ready(() => {
+//   $('#searchForm').on('submit', (e) => {
+//     let searchText = $('#search').val();
+//     console.log(SearchText)
+//     getMovies(searchText);
+//     e.preventDefault();
+//   });
+// });
+
+// function getMovies(searchText){
+//   axios.get(searchURL)
+//     .then((response) => {
+//       console.log(response);
+//       let movies = response.data.Search;
+//       let output = '';
+//       $.each(movies, (index, movie) => {
+//         output += `
+//           <div class="col-md-3">
+//             <div class="well text-center">
+//               <img src="${movie.Poster}">
+//               <h5>${movie.Title}</h5>
+//               <a onclick="movieSelected('${movie.id}')" class="btn btn-primary" href="#">Movie Details</a>
+//             </div>
+//           </div>
+//         `;
+//       });
+
+//       $('#movies').html(output);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// }
+
+
