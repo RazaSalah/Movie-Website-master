@@ -264,7 +264,7 @@ function showMovies(data) {
           <div class="overview">
 
               <h3>Overview</h3>
-              ${overview}
+              <p class="fifty-chars">${overview}</p>
               <br/> 
               <button class="know-more" id="${id}">Know More</button>
                
@@ -318,7 +318,8 @@ function openNav(movie) {
         var content = `
         <h1 class="no-results">${movie.original_title}</h1>
         <br/>
-        
+        <p>${movie.overview}</p>
+        <br>
         ${embed.join('')}
         <br/>
 
