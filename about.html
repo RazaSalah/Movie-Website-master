@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Movie</title>
+    <link rel="shortcut icon" href="/img/icon.png" type="image/x-icon">
+    <!-- body font -->  
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Poppins:wght@200;300;400&family=Quicksand&display=swap" rel="stylesheet">
+    <!-- menu font -->
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Quicksand&display=swap" rel="stylesheet">
+    <!-- OWL CAROUSEL -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" />
+    <!-- BOX ICONS -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <!-- Link Swiper's CSS -->
+     <link
+     rel="stylesheet"
+     href="https://unpkg.com/swiper/swiper-bundle.min.css"
+   />
+  
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/816f353cd9.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  </head>
+<body>
+     <!-- scroll progress bar -->
+  <div id="progress">
+    <span id="progress-value"></span>
+  </div>
+ <!-- navigation  -->
+ <nav class="navigation">
+
+   <!-- menu btn -->
+  <input type="checkbox" class="menu-btn" name="" id="menu-btn">
+  <label for="menu-btn" class="menu-icon">
+    <span class="nav-icon"></span>
+  </label>
+<!-- logo -->
+<a href="index.html" class="logo">Your<span>Movies</span></a>
+  <!-- menu  -->
+   <ul class="menu">
+     <li><a href="index.html">Home</a> </li>
+     <li><a href="contact.html">Contact</a> </li>
+     <li><a href="About.html">About</a> </li>
+  
+   </ul>
+
+   <!-- search -->
+   <form action="" class="search-box" id="searchForm">
+     <input type="text" name="search" placeholder="Search..."
+      class="search-movie" id="search"> 
+      <button class="search-btn" type="submit" id="search-btn"><i class="fas fa-search"></i></button>
+   </form>
+ </nav>
+ <!-- end of nav -->
+    <div class="aboutus-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="aboutus">
+                        <h2 class="aboutus-title">About Us</h2>
+                        <p class="aboutus-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p class="aboutus-text"> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                        <a class="aboutus-more" href="#">read more</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <!-- <div class="aboutus-banner">
+                        <img src="http://themeinnovation.com/demo2/html/build-up/img/home1/about1.jpg" alt="">
+                    </div> -->
+                </div>
+                <div class="col-md-5 col-sm-6 col-xs-12">
+                    <div class="feature">
+                        <div class="feature-box">
+                            <div class="clearfix">
+                                <div class="iconset">
+                                    <span class="glyphicon glyphicon-cog icon"></span>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>Movies</h4>
+                                    <p> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-box">
+                            <div class="clearfix">
+                                <div class="iconset">
+                                    <span class="glyphicon glyphicon-cog icon"></span>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>TV shows</h4>
+                                    <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-box">
+                            <div class="clearfix">
+                                <div class="iconset">
+                                    <span class="glyphicon glyphicon-cog icon"></span>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>Drama</h4>
+                                    <p> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- footer -->
+<footer>
+    <!-- footer logo -->
+    <a href="index.html" class="logo">Your<span>Movies</span></a>
+  <!-- copyright -->
+  <span class="copyright">Copyright 2022-All the Right Reserved</span>
+  </footer>
+  <!-- footer end -->
+   
+  <!-- Axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- jQuery -->
+  <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- bootstrap -->
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- js -->
+    <script src="js/app.js" defer></script> 
+  
+  </body>
+  </html>

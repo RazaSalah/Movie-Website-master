@@ -266,8 +266,13 @@ function showMovies(data) {
               <h3>Overview</h3>
               ${overview}
               <br/> 
-              <button class="know-more" id="${id}">Know More</button
+              <button class="know-more" id="${id}">Know More</button>
+               
+          <i class="far fa-clock links"></i>
+          <i class="far fa-heart links"></i>
           </div>
+         
+         
       
       `
 
@@ -281,6 +286,108 @@ function showMovies(data) {
 }
 
 // the movie trailer functions
+const overlayContent = document.getElementById('overlay-content');
+/* Open when someone clicks on the span element */
+function openNav(movie) {
+  let id = movie.id;
+  axios.get(BASE_URL + '/movie/'+id+'/videos?'+API_KEY).then(function(response){
+    
+    if(response.data.results){
+      document.getElementById("myNav").style.width = "100%";
+      if(response.data.results.length > 0){
+        var embed = [];
+        var dots = [];
+        response.data.results.forEach((video, idx) => {
+          let {name, key, site} = video
+
+          if(site == 'YouTube'){
+              
+            embed.push(`
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}"
+               class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+                gyroscope; picture-in-picture" allowfullscreen></iframe>
+          
+          `)
+
+            dots.push(`
+              <span class="dot">${idx + 1}</span>
+            `)
+          }
+        })
+        
+        var content = `
+        <h1 class="no-results">${movie.original_title}</h1>
+        <br/>
+        
+        ${embed.join('')}
+        <br/>
+
+        <div class="dots">${dots.join('')}</div>
+        
+        `
+        overlayContent.innerHTML = content;
+        activeSlide=0;
+        showVideos();
+      }else{
+        overlayContent.innerHTML = `<h1 class="no-results">No Results Found</h1>`
+      }
+    }
+  })
+}
+
+/* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+  document.getElementById("myNav").style.width = "0%";
+}
+var activeSlide = 0;
+var totalVideos = 0;
+
+function showVideos(){
+  let embedClasses = document.querySelectorAll('.embed');
+  let dots = document.querySelectorAll('.dot');
+
+  totalVideos = embedClasses.length; 
+  embedClasses.forEach((embedTag, idx) => {
+    if(activeSlide == idx){
+      embedTag.classList.add('show')
+      embedTag.classList.remove('hide')
+
+    }else{
+      embedTag.classList.add('hide');
+      embedTag.classList.remove('show')
+    }
+  })
+
+  dots.forEach((dot, indx) => {
+    if(activeSlide == indx){
+      dot.classList.add('active');
+    }else{
+      dot.classList.remove('active')
+    }
+  })
+}
+
+const leftArrow = document.getElementById('left-arrow')
+const rightArrow = document.getElementById('right-arrow')
+
+leftArrow.addEventListener('click', () => {
+  if(activeSlide > 0){
+    activeSlide--;
+  }else{
+    activeSlide = totalVideos -1;
+  }
+
+  showVideos()
+})
+
+rightArrow.addEventListener('click', () => {
+  if(activeSlide < (totalVideos -1)){
+    activeSlide++;
+  }else{
+    activeSlide = 0;
+  }
+  showVideos()
+})
 
 // for the rating
 function getColor(vote) {
@@ -337,6 +444,13 @@ if(key[0] != 'page'){
   getMovies(url);
 }
 }
+
+document.querySelector('#contact-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  e.target.elements.name.value = '';
+  e.target.elements.email.value = '';
+  e.target.elements.message.value = '';
+});
 
 
 
