@@ -312,8 +312,8 @@ function openNav(movie) {
         <br/>
         <div class="dots">${dots.join('')}</div>
         <br>
-        <button class="links"><i class="far fa-heart" id="fav"></i></button>
-        <button class="links"><i class="far fa-clock" id="watch"></i></button>
+        <button class="links"><i class="far fa-heart" id="favorite"></i></button>
+        <button class="links"><i class="far fa-clock" id="watchLater"></i></button>
         `
         overlayContent.innerHTML = content;
         activeSlide=0;
@@ -322,7 +322,7 @@ function openNav(movie) {
         overlayContent.innerHTML = `<h1 class="no-results">No Results Found</h1>`
       }
 
-      document.querySelector("#fav").addEventListener('click', () => {
+      document.querySelector("#favorite").addEventListener('click', () => {
         console.log(id);
         console.log(movie);
         if(!favMovie.includes(movie)){
@@ -334,7 +334,7 @@ function openNav(movie) {
         console.log(favMovie);
        
       })
-      document.querySelector("#watch").addEventListener('click', () => {
+      document.querySelector("#watchLater").addEventListener('click', () => {
         console.log(id);
         console.log(movie);
         if(!watch.includes(movie)){
@@ -348,99 +348,102 @@ function openNav(movie) {
   })
 }
 
-
+favPage.addEventListener('click' ,() =>{
+  getFav();
+})
 // get the saved movie from local storage
-// function getFav(){
-//   // Retrieve the array from local storage
-//   var array = localStorage.getItem('myfav');
-// // Parse it to something usable in js
-//   array = JSON.parse(array);
-//   if(!array.length == 0){
-//     showFavmovie(array);
-//   }else {
-//     array =[];
-//   }
-// }
+function getFav(){
+  // Retrieve the array from local storage
+  var array = localStorage.getItem('myfav');
+console.log(array,"array")
+// Parse it to something usable in js
+  array = JSON.parse(array);
+  if(!array.length == 0){
+    showFavmovie(array);
+  }else {
+    array =[];
+  }
+}
 
-// function showFavmovie(array){
-//   const container = document.getElementById("favmain");
-//  //container.innerHTML =``;
-//   array.forEach(movie => {
-//       const {title, poster_path, vote_average, overview, id} = movie;
-//       const movieEl = document.createElement('div');
-//       movieEl.classList.add('movie');
-//       movieEl.innerHTML = `
-//            <img src="${poster_path? IMG_URL+poster_path: "http://via.placeholder.com/1080x1580" }" alt="${title}">
+function showFavmovie(array){
+  const container = document.getElementById("favmain");
+ //container.innerHTML =``;
+  array.forEach(movie => {
+      const {title, poster_path, vote_average, overview, id} = movie;
+      const movieEl = document.createElement('div');
+      movieEl.classList.add('movie');
+      movieEl.innerHTML = `
+           <img src="${poster_path? IMG_URL+poster_path: "http://via.placeholder.com/1080x1580" }" alt="${title}">
 
-//           <div class="movie-info">
-//               <h3>${title}</h3>
-//               <span class="${getColor(vote_average)}">${vote_average}</span>
-//           </div>
+          <div class="movie-info">
+              <h3>${title}</h3>
+              <span class="${getColor(vote_average)}">${vote_average}</span>
+          </div>
 
-//           <div class="overview">
-//               <h3>Overview</h3>
-//               <p class="fifty-chars">${overview}</p>
-//               <br/> 
-//               <button class="know-more" id="${id}">Know More</button>
-//           </div>
-//       `
+          <div class="overview">
+              <h3>Overview</h3>
+              <p class="fifty-chars">${overview}</p>
+              <br/> 
+              <button class="know-more" id="${id}">Know More</button>
+          </div>
+      `
 
-//       container.appendChild(movieEl);
+      container.appendChild(movieEl);
 
-//       document.getElementById(id).addEventListener('click', () => {
-//         console.log(id)
-//         openNav(movie)
-//       })
+      document.getElementById(id).addEventListener('click', () => {
+        console.log(id)
+        openNav(movie)
+      })
     
 
-//   })
-// }
+  })
+}
 
-// function getwatch(){
-//   // Retrieve the array from local storage
-//   var array = localStorage.getItem('watch');
-// // Parse it to something usable in js
-//   array = JSON.parse(array);
-//   if(!array.length == 0){
-//     showWatchmovie(array);
-//   }else {
-//     array =[];
-//   }
-// }
+function getwatch(){
+  // Retrieve the array from local storage
+  var array = localStorage.getItem('watch');
+// Parse it to something usable in js
+  array = JSON.parse(array);
+  if(!array.length == 0){
+    showWatchmovie(array);
+  }else {
+    array =[];
+  }
+}
 
-// function showWatchmovie(array){
-//   const container = document.getElementById("watchmain");
-//  //container.innerHTML =``;
-//   array.forEach(movie => {
-//       const {title, poster_path, vote_average, overview, id} = movie;
-//       const movieEl = document.createElement('div');
-//       movieEl.classList.add('movie');
-//       movieEl.innerHTML = `
-//            <img src="${poster_path? IMG_URL+poster_path: "http://via.placeholder.com/1080x1580" }" alt="${title}">
+function showWatchmovie(array){
+  const container = document.getElementById("watchmain");
+ //container.innerHTML =``;
+  array.forEach(movie => {
+      const {title, poster_path, vote_average, overview, id} = movie;
+      const movieEl = document.createElement('div');
+      movieEl.classList.add('movie');
+      movieEl.innerHTML = `
+           <img src="${poster_path? IMG_URL+poster_path: "http://via.placeholder.com/1080x1580" }" alt="${title}">
 
-//           <div class="movie-info">
-//               <h3>${title}</h3>
-//               <span class="${getColor(vote_average)}">${vote_average}</span>
-//           </div>
+          <div class="movie-info">
+              <h3>${title}</h3>
+              <span class="${getColor(vote_average)}">${vote_average}</span>
+          </div>
 
-//           <div class="overview">
-//               <h3>Overview</h3>
-//               <p class="fifty-chars">${overview}</p>
-//               <br/> 
-//               <button class="know-more" id="${id}">Know More</button>
-//           </div>
-//       `
+          <div class="overview">
+              <h3>Overview</h3>
+              <p class="fifty-chars">${overview}</p>
+              <br/> 
+              <button class="know-more" id="${id}">Know More</button>
+          </div>
+      `
 
-//       container.appendChild(movieEl);
+      container.appendChild(movieEl);
 
-//       document.getElementById(id).addEventListener('click', () => {
-//         console.log(id)
-//         openNav(movie)
-//       })
+      document.getElementById(id).addEventListener('click', () => {
+        console.log(id)
+        openNav(movie)
+      })
     
 
-//   })
-// }
+  })
+}
 
 /* Close when someone clicks on the "x" symbol inside the overlay */
 function closeNav() {
