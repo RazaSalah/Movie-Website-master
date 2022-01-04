@@ -323,13 +323,17 @@ function openNav(movie) {
       document.querySelector("#fav").addEventListener('click', () => {
         console.log(id)
         console.log(movie)
+        favMovie.push(movie);
+        if(favMovie.includes(movie)){
+          
+        }
+        console.log(favMovie);
        
       })
       document.querySelector("#watch").addEventListener('click', () => {
-        console.log(id)
-        console.log(movie)
-        favMovie.push(movie)
-        console.log(favMovie);
+        console.log(id);
+        console.log(movie);
+       
       })
     }
   })
