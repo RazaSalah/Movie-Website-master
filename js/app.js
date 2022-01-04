@@ -255,10 +255,8 @@ function showMovies(data) {
               <p class="fifty-chars">${overview}</p>
               <br/> 
               <button class="know-more" id="${id}">Know More</button>
-              <label for="id-of-input" class="custom-checkbox">
-              <input type="checkbox" id="id-of-input"/>
-              <i class="glyphicon glyphicon-heart-empty"></i>
-              <i class="glyphicon glyphicon-heart"></i></label>
+            
+
           </div>
       `
 
@@ -268,7 +266,7 @@ function showMovies(data) {
         console.log(id)
         openNav(movie)
       })
-     
+    
 
   })
 }
@@ -311,7 +309,9 @@ function openNav(movie) {
         ${embed.join('')}
         <br/>
         <div class="dots">${dots.join('')}</div>
-        
+        <br>
+        <button class="links"><i class="far fa-heart" id="fav"></i></button>
+        <button class="links"><i class="far fa-clock" id="watch"></i></button>
         `
         overlayContent.innerHTML = content;
         activeSlide=0;
@@ -319,6 +319,18 @@ function openNav(movie) {
       }else{
         overlayContent.innerHTML = `<h1 class="no-results">No Results Found</h1>`
       }
+
+      document.querySelector("#fav").addEventListener('click', () => {
+        console.log(id)
+        console.log(movie)
+       
+      })
+      document.querySelector("#watch").addEventListener('click', () => {
+        console.log(id)
+        console.log(movie)
+        favMovie.push(movie)
+        console.log(favMovie);
+      })
     }
   })
 }
