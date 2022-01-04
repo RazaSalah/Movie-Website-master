@@ -111,6 +111,7 @@ body{
   font-size: 2rem;
   font-family: monoton;
   transition: all ease 0.3s;
+  letter-spacing: 1px;
 }
 .menu li a:hover {
   color: #e70634;
@@ -310,8 +311,43 @@ main{
    -webkit-line-clamp: 5; /* number of lines to show */
    -webkit-box-orient: vertical;
 }
-
-
+/* star rating */
+.rate {
+  float: left;
+  height: 46px;
+  padding: 0 10px;
+}
+.rate:not(:checked) > input {
+  position:absolute;
+  top:-9999px;
+}
+.rate:not(:checked) > label {
+  float:right;
+  width:1em;
+  overflow:hidden;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:30px;
+  color:#ccc;
+}
+.rate:not(:checked) > label:before {
+  content: '★ ';
+}
+.rate > input:checked ~ label {
+  color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+  color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+  color: #c59b08;
+}
+/* movie filter */
 #tags{
   width:80%;
   display:flex;
@@ -528,40 +564,6 @@ main{
   background: #e70634;
 }
 
-@media (max-width: 950px) {
-  .container{
-    width: 90%;
-    padding: 30px 40px 40px 35px ;
-  }
-  .container .content .right-side{
-   width: 75%;
-   margin-left: 55px;
-}
-}
-@media (max-width: 820px) {
-  .container{
-    margin: 40px 0;
-    height: 100%;
-  }
-  .container .content{
-    flex-direction: column-reverse;
-  }
- .container .content .left-side{
-   width: 100%;
-   flex-direction: row;
-   margin-top: 40px;
-   justify-content: center;
-   flex-wrap: wrap;
- }
- .container .content .left-side::before{
-   display: none;
- }
- .container .content .right-side{
-   width: 100%;
-   margin-left: 0;
- }
-}
-
 /* about us */
 
 .aboutus-section {
@@ -610,7 +612,6 @@ a:hover, a:active {
   text-transform: uppercase;
 }
 
-
 .feature .feature-box .feature-content h4 {
   color: #e70634;
   font-size: 18px;
@@ -618,7 +619,6 @@ a:hover, a:active {
   line-height: 22px;
   margin: 0 0 5px;
 }
-
 
 .feature .feature-box .feature-content {
   float: left;
@@ -649,6 +649,40 @@ a:hover, a:active {
   line-height: 70px;
   text-align: center;
   width: 70px;
+}
+
+@media (max-width: 950px) {
+  .container{
+    width: 90%;
+    padding: 30px 40px 40px 35px ;
+  }
+  .container .content .right-side{
+   width: 75%;
+   margin-left: 55px;
+}
+}
+@media (max-width: 820px) {
+  .container{
+    margin: 40px 0;
+    height: 100%;
+  }
+  .container .content{
+    flex-direction: column-reverse;
+  }
+ .container .content .left-side{
+   width: 100%;
+   flex-direction: row;
+   margin-top: 40px;
+   justify-content: center;
+   flex-wrap: wrap;
+ }
+ .container .content .left-side::before{
+   display: none;
+ }
+ .container .content .right-side{
+   width: 100%;
+   margin-left: 0;
+ }
 }
 
 /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
@@ -706,5 +740,55 @@ a:hover, a:active {
   border-color: #e70634;
 }
 
+/* responsive  */
+@media screen and (max-width: 1200px) {
+  .menu li a{
+    margin:0px;
+    font-size:1.6rem;
+  }
+  .menu{
+    flex-direction: column;
+  }
+}
 
-
+@media screen and (max-width: 824px) {
+.navigation{
+  padding: 20px 10px;
+  width:90%;
+}
+.logo ,footer .logo{
+  font-size:1.3rem;
+}
+footer{
+  padding: 10px 20px;
+  text-align: center;
+}
+}
+@media screen and (max-width: 530px) {
+  .navigation{
+   display: grid;
+   grid-template-columns: 60px 1fr;
+   grid-template-rows: 1fr 1fr ;
+   padding: 20px 0px;
+  }
+  .logo{
+    margin: 0px;
+  }
+  .search-box{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    width:100%;
+    
+  }
+  .menu li a:hover{
+    font-size:1.8rem;
+  }
+  footer .copyright{
+    font-size:.8rem;
+  }
+  .fix-icon .menu-icon{
+    left: 10px;
+    top:0px;
+    border-radius:4px;
+  }
+}

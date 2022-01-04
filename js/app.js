@@ -5,19 +5,6 @@ const API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&'+API_KEY;
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 const searchURL = BASE_URL + '/search/movie?'+API_KEY;
 
-// const requests = {
-//   fetchPopular: `${base_url}/discover/movie?sort_by=popularity.desc&${APIKey}`,
-//   fetchTrending: `${base_url}/discover/movie?primary_release_year=2010&sort_by=vote_average.desc&${APIKey}&language=en-US`,
-//   fetchNetflixOrignals: `${base_url}/discover/tv?${APIKey}&with_networks=213`,
-//   fetchActionMovies: `${base_url}/discover/movie?${APIKey}&with_genres=28`,
-//   fetchComedyMovies: `${base_url}/discover/movie?${APIKey}&with_genres=35`,
-//   fetchHorrorMovies: `${base_url}/discover/movie?${APIKey}&with_genres=27`,
-//   fetchMystryMovies: `${base_url}/discover/movie?${APIKey}&with_genres=9648`,
-//   fetchBestDrama: `${base_url}/discover/movie? ${APIKey}&with_genres=18&primary_release_year=2014`,
-//   fetchTopDrama: `${base_url}/discover/movie? ${APIKey} &with_genres=18&sort_by=vote_average.desc&vote_count.gte=10 `,
-//   fetchDrama: `${base_url}/discover/movie?${APIKey}&with_genres=18`,
-// };
-
 const genres = [
   {
     "id": 28,
@@ -96,7 +83,8 @@ const genres = [
     "name": "Western"
   }
 ]
-
+const favMovie =[];
+const watch =[];
 // var
 const main = document.getElementById('main');
 const form =  document.getElementById('searchForm');
@@ -267,13 +255,11 @@ function showMovies(data) {
               <p class="fifty-chars">${overview}</p>
               <br/> 
               <button class="know-more" id="${id}">Know More</button>
-               
-          <i class="far fa-clock links"></i>
-          <i class="far fa-heart links"></i>
+              <label for="id-of-input" class="custom-checkbox">
+              <input type="checkbox" id="id-of-input"/>
+              <i class="glyphicon glyphicon-heart-empty"></i>
+              <i class="glyphicon glyphicon-heart"></i></label>
           </div>
-         
-         
-      
       `
 
       main.appendChild(movieEl);
@@ -282,6 +268,8 @@ function showMovies(data) {
         console.log(id)
         openNav(movie)
       })
+     
+
   })
 }
 
@@ -322,7 +310,6 @@ function openNav(movie) {
         <br>
         ${embed.join('')}
         <br/>
-
         <div class="dots">${dots.join('')}</div>
         
         `
@@ -446,258 +433,8 @@ if(key[0] != 'page'){
 }
 }
 
-document.querySelector('#contact-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  e.target.elements.name.value = '';
-  e.target.elements.email.value = '';
-  e.target.elements.message.value = '';
-});
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// popular movies
-// axios.get(requests.fetchPopular).then(function (response) {
-
-//   const headrow = document.getElementById("headrow");
-//   const row = document.createElement("div");
-//   row.className = "row";
-//   row.classList.add("popularrow");
-//   headrow.appendChild(row);
-//   const title = document.createElement("h2");
-//   title.className = "row__title";
-//   title.innerText = "Trending Now";
-//   row.appendChild(title);
-//   const row_posters = document.createElement("div");
-//   row_posters.className = "row__posters";
-//   row.appendChild(row_posters);
-//   response.data.results.forEach(movie => {
-//     const poster = document.createElement("img");
-//     poster.className = "row__posterLarge";
-//     var s2 = movie.id;
-//     poster.id = s2;
-//     poster.src = IMG_URL + movie.poster_path;
-//     row_posters.appendChild(poster);
-
-//   });
-// });
-// axios.get(requests.fetchNetflixOrignals)
-// .then(function (response)  {
-//   const headrow = document.getElementById("headrow");
-//   const row = document.createElement("div");
-//   row.className = "row";
-//   row.classList.add("netflixrow");
-//   headrow.appendChild(row);
-//   const title = document.createElement("h2");
-//   title.className = "row__title";
-//   title.innerText = "NETFLIX ORIGINALS";
-//   row.appendChild(title);
-//   const row_posters = document.createElement("div");
-//   row_posters.className = "row__posters";
-//   row.appendChild(row_posters);
-//   response.data.results.forEach(movie => {
-//     const poster = document.createElement("img");
-//     poster.className = "row__posterLarge";
-//     var s = movie.name.replace(/\s+/g, "");
-//     poster.id = s;
-//     poster.src = IMG_URL + movie.poster_path;
-//     row_posters.appendChild(poster);
-
-//   });
-// });
-
-
-// // top rated 
-// axios.get(requests.fetchActionMovies).then(function(response){
-//   const headrow = document.getElementById("headrow");
-//   const row = document.createElement("div");
-//   row.className = "row";
-//   headrow.appendChild(row);
-//   const title = document.createElement("h2");
-//   title.className = "row__title";
-//   title.innerText = "Action Movies";
-//   row.appendChild(title);
-//   const row_posters = document.createElement("div");
-//   row_posters.className = "row__posters";
-//   row.appendChild(row_posters);
-//   response.data.results.forEach(movie => {
-//     console.log(movie);
-//     const poster = document.createElement("img");
-//     poster.className = "row__posterLarge";
-//     var s2 = movie.id;
-//     poster.id = s2;
-//     poster.src = IMG_URL + movie.poster_path;
-//     row_posters.appendChild(poster);
-
-//   });
-// });
-
-// // comedy
-// axios.get(requests.fetchComedyMovies).then(function(response){
-//   const headrow = document.getElementById("headrow");
-//   const row = document.createElement("div");
-//   row.className = "row";
-//   headrow.appendChild(row);
-//   const title = document.createElement("h2");
-//   title.className = "row__title";
-//   title.innerText = "Comedy Movies";
-//   row.appendChild(title);
-//   const row_posters = document.createElement("div");
-//   row_posters.className = "row__posters";
-//   row.appendChild(row_posters);
-//   response.data.results.forEach(movie => {
-//     console.log(movie);
-//     const poster = document.createElement("img");
-//     poster.className = "row__posterLarge";
-//     var s2 = movie.id;
-//     poster.id = s2;
-//     poster.src = IMG_URL + movie.backdrop_path;
-//     row_posters.appendChild(poster);
-
-//   });
-// });
-// // Horror
-// axios.get(requests.fetchHorrorMovies).then(function(response){
-//   const headrow = document.getElementById("headrow");
-//   const row = document.createElement("div");
-//   row.className = "row";
-//   headrow.appendChild(row);
-//   const title = document.createElement("h2");
-//   title.className = "row__title";
-//   title.innerText = "Horror Movies";
-//   row.appendChild(title);
-//   const row_posters = document.createElement("div");
-//   row_posters.className = "row__posters";
-//   row.appendChild(row_posters);
-//   response.data.results.forEach(movie => {
-//     console.log(movie);
-//     const poster = document.createElement("img");
-//     poster.className = "row__posterLarge";
-//     var s2 = movie.id;
-//     poster.id = s2;
-//     poster.src = IMG_URL + movie.backdrop_path;
-//     row_posters.appendChild(poster);
-
-//   });
-// });
-// // mystery movies
-// axios.get(requests.fetchMystryMovies).then(function(response){
-//   const headrow = document.getElementById("headrow");
-//   const row = document.createElement("div");
-//   row.className = "row";
-//   headrow.appendChild(row);
-//   const title = document.createElement("h2");
-//   title.className = "row__title";
-//   title.innerText = "Mystery Movies";
-//   row.appendChild(title);
-//   const row_posters = document.createElement("div");
-//   row_posters.className = "row__posters";
-//   row.appendChild(row_posters);
-//   response.data.results.forEach(movie => {
-//     console.log(movie);
-//     const poster = document.createElement("img");
-//     poster.className = "row__posterLarge";
-//     var s2 = movie.id;
-//     poster.id = s2;
-//     poster.src = IMG_URL + movie.backdrop_path;
-//     row_posters.appendChild(poster);
-
-//   });
-// });
-// / search
-// $(document).ready(() => {
-//   $('#searchForm').on('submit', (e) => {
-//     let searchText = $('#search').val();
-//     console.log(SearchText)
-//     getMovies(searchText);
-//     e.preventDefault();
-//   });
-// });
-
-// function getMovies(searchText){
-//   axios.get(searchURL)
-//     .then((response) => {
-//       console.log(response);
-//       let movies = response.data.Search;
-//       let output = '';
-//       $.each(movies, (index, movie) => {
-//         output += `
-//           <div class="col-md-3">
-//             <div class="well text-center">
-//               <img src="${movie.Poster}">
-//               <h5>${movie.Title}</h5>
-//               <a onclick="movieSelected('${movie.id}')" class="btn btn-primary" href="#">Movie Details</a>
-//             </div>
-//           </div>
-//         `;
-//       });
-
-//       $('#movies').html(output);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// }
 
 
