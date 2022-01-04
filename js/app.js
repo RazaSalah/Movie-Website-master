@@ -321,11 +321,13 @@ function openNav(movie) {
       }
 
       document.querySelector("#fav").addEventListener('click', () => {
-        console.log(id)
-        console.log(movie)
-        favMovie.push(movie);
-        if(favMovie.includes(movie)){
-          
+        console.log(id);
+        console.log(movie);
+        if(!favMovie.includes(movie)){
+          favMovie.push(movie);
+          localStorage.setItem('myfav', JSON.stringify(favMovie));
+
+
         }
         console.log(favMovie);
        
@@ -333,9 +335,64 @@ function openNav(movie) {
       document.querySelector("#watch").addEventListener('click', () => {
         console.log(id);
         console.log(movie);
-       
+        if(!watch.includes(movie)){
+          watch.push(movie);
+          localStorage.setItem('later', JSON.stringify(watch));
+          
+        }
+        console.log(watch);
       })
     }
+  })
+}
+
+// get the saved movie from local storage
+function getFav(){
+  // Retrieve the array from local storage
+  var array = localStorage.getItem('fav');
+// Parse it to something usable in js
+  array = JSON.parse(array);
+  if(!array.length == 0){
+    showFavmovie(array);
+  }else {
+    array =[];
+  }
+}
+
+function showFavmovie(array){
+  const container = document.getElementById("favmain");
+ 
+  array.forEach(movie => {
+      const {title, poster_path, vote_average, overview, id} = movie;
+      const movieEl = document.createElement('div');
+      movieEl.classList.add('movie');
+      movieEl.innerHTML = `
+           <img src="${poster_path? IMG_URL+poster_path: "http://via.placeholder.com/1080x1580" }" alt="${title}">
+
+          <div class="movie-info">
+              <h3>${title}</h3>
+              <span class="${getColor(vote_average)}">${vote_average}</span>
+          </div>
+
+          <div class="overview">
+
+              <h3>Overview</h3>
+              <p class="fifty-chars">${overview}</p>
+              <br/> 
+              <button class="know-more" id="${id}">Know More</button>
+            
+
+          </div>
+      `
+
+      container.appendChild(movieEl);
+
+      document.getElementById(id).addEventListener('click', () => {
+        console.log(id)
+        openNav(movie)
+      })
+    
+
   })
 }
 
@@ -448,6 +505,7 @@ if(key[0] != 'page'){
   getMovies(url);
 }
 }
+
 
 
 
