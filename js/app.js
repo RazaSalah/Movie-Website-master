@@ -287,8 +287,8 @@ function openNav(movie) {
         var dots = [];
         response.data.results.forEach((video, idx) => {
           let {name, key, site} = video
-
-          if(site == 'YouTube'){
+// check weather the site is youtube or not and the no of video should be less than 4
+          if(site == 'YouTube' && embed.length <= 3){
               
             embed.push(`
               <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}"
