@@ -83,8 +83,17 @@ const genres = [
     "name": "Western"
   }
 ]
-const favMovie =[];
-const watch =[];
+let favMovie =[];
+let watch =[];
+let favStorage =  JSON.parse(localStorage.myfav);
+let watchStorage =  JSON.parse(localStorage.later);
+if(favStorage!= null){
+  favMovie = favStorage
+}
+
+if(watchStorage!= null){
+  watch = watchStorage
+}
 // var
 const main = document.getElementById('main');
 const form =  document.getElementById('searchForm');
