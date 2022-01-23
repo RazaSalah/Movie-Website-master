@@ -26,5 +26,15 @@ A simple movies website, If you like movies, this website will be useful to you,
 - Allow users to add movies into watch later list.
 - Allow users to remove movies from watch later list.
 
+## Project Interface
+- Home Page
+<img src="img/movie home.jpeg">
+
+- Favorite Movie Page
+<img src="img/movie fav.jpeg">
+
+- Watch Later Movie Page
+<img src="img/movie later.jpeg">
+
 
 
