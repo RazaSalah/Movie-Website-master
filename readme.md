@@ -31,6 +31,9 @@ A simple movies website, If you like movies, this website will be useful to you,
 <img src="img/movie home.jpeg">
 
 - Favorite Movie Page
+<img src="img/movie details.jpeg">
+
+- Favorite Movie Page
 <img src="img/movie fav.jpeg">
 
 - Watch Later Movie Page
