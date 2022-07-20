@@ -1,118 +1,116 @@
 // API links
 const API_KEY = "api_key=bd95210b0fc359499095f827f48634cf";
-const BASE_URL = 'https://api.themoviedb.org/3';
-const API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&'+API_KEY;
-const IMG_URL = 'https://image.tmdb.org/t/p/w500';
-const searchURL = BASE_URL + '/search/movie?'+API_KEY;
+const BASE_URL = "https://api.themoviedb.org/3";
+const API_URL = BASE_URL + "/discover/movie?sort_by=popularity.desc&" + API_KEY;
+const IMG_URL = "https://image.tmdb.org/t/p/w500";
+const searchURL = BASE_URL + "/search/movie?" + API_KEY;
 
 const genres = [
   {
-    "id": 28,
-    "name": "Action"
+    id: 28,
+    name: "Action",
   },
   {
-    "id": 12,
-    "name": "Adventure"
+    id: 12,
+    name: "Adventure",
   },
   {
-    "id": 16,
-    "name": "Animation"
+    id: 16,
+    name: "Animation",
   },
   {
-    "id": 35,
-    "name": "Comedy"
+    id: 35,
+    name: "Comedy",
   },
   {
-    "id": 80,
-    "name": "Crime"
+    id: 80,
+    name: "Crime",
   },
   {
-    "id": 99,
-    "name": "Documentary"
+    id: 99,
+    name: "Documentary",
   },
   {
-    "id": 18,
-    "name": "Drama"
+    id: 18,
+    name: "Drama",
   },
   {
-    "id": 10751,
-    "name": "Family"
+    id: 10751,
+    name: "Family",
   },
   {
-    "id": 14,
-    "name": "Fantasy"
+    id: 14,
+    name: "Fantasy",
   },
   {
-    "id": 36,
-    "name": "History"
+    id: 36,
+    name: "History",
   },
   {
-    "id": 27,
-    "name": "Horror"
+    id: 27,
+    name: "Horror",
   },
   {
-    "id": 10402,
-    "name": "Music"
+    id: 10402,
+    name: "Music",
   },
   {
-    "id": 9648,
-    "name": "Mystery"
+    id: 9648,
+    name: "Mystery",
   },
   {
-    "id": 10749,
-    "name": "Romance"
+    id: 10749,
+    name: "Romance",
   },
   {
-    "id": 878,
-    "name": "Science Fiction"
+    id: 878,
+    name: "Science Fiction",
   },
   {
-    "id": 10770,
-    "name": "TV Movie"
+    id: 10770,
+    name: "TV Movie",
   },
   {
-    "id": 53,
-    "name": "Thriller"
+    id: 53,
+    name: "Thriller",
   },
   {
-    "id": 10752,
-    "name": "War"
+    id: 10752,
+    name: "War",
   },
   {
-    "id": 37,
-    "name": "Western"
-  }
-]
-let favMovie =[];
-let watch =[];
-let favStorage =  JSON.parse(localStorage.myfav);
-let watchStorage =  JSON.parse(localStorage.later);
-if(favStorage!= null){
-  favMovie = favStorage
-}
+    id: 37,
+    name: "Western",
+  },
+];
+let favMovie = [];
+let watch = [];
+// // let favStorage =  JSON.parse(localStorage.myfav);
+// let watchStorage = JSON.parse(localStorage.later);
+// if (favStorage != null) {
+//   favMovie = favStorage;
+// }
 
-if(watchStorage!= null){
-  watch = watchStorage
-}
+// if (watchStorage != null) {
+//   watch = watchStorage;
+// }
 // var
-const main = document.getElementById('main');
-const form =  document.getElementById('searchForm');
-const search = document.getElementById('search');
-const tagsEl = document.getElementById('tags');
+const main = document.getElementById("main");
+const form = document.getElementById("searchForm");
+const search = document.getElementById("search");
+const tagsEl = document.getElementById("tags");
 
-const prev = document.getElementById('prev')
-const next = document.getElementById('next')
-const current = document.getElementById('current')
-const favPage = document.getElementById('fav')
-const watchPage = document.getElementById('later')
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+const current = document.getElementById("current");
+const favPage = document.getElementById("fav");
+const watchPage = document.getElementById("later");
 
 var currentPage = 1;
 var nextPage = 2;
 var prevPage = 3;
-var lastUrl = '';
+var lastUrl = "";
 var totalPages = 100;
-
-
 
 // fixed menu button
 $(window).scroll(function () {
@@ -136,124 +134,119 @@ let scrollPercentage = () => {
 window.onscroll = scrollPercentage;
 window.onload = scrollPercentage;
 
-
-
 // the filter functions
-var selectedGenre = []
+var selectedGenre = [];
 setGenre();
 function setGenre() {
-  tagsEl.innerHTML= '';
-  genres.forEach(genre => {
-      const t = document.createElement('div');
-      t.classList.add('tag');
-      t.id=genre.id;
-      t.innerText = genre.name;
-      t.addEventListener('click', () => {
-          if(selectedGenre.length == 0){
-              selectedGenre.push(genre.id);
-          }else{
-              if(selectedGenre.includes(genre.id)){
-                  selectedGenre.forEach((id, idx) => {
-                      if(id == genre.id){
-                          selectedGenre.splice(idx, 1);
-                      }
-                  })
-              }else{
-                  selectedGenre.push(genre.id);
-              }
-          }
-          console.log(selectedGenre)
-          getMovies(API_URL + '&with_genres='+encodeURI(selectedGenre.join(',')))
-          highlightSelection()
-      })
-      tagsEl.append(t);
-  })
+  tagsEl.innerHTML = "";
+  genres.forEach((genre) => {
+    const t = document.createElement("div");
+    t.classList.add("tag");
+    t.id = genre.id;
+    t.innerText = genre.name;
+    t.addEventListener("click", () => {
+      if (selectedGenre.length == 0) {
+        selectedGenre.push(genre.id);
+      } else {
+        if (selectedGenre.includes(genre.id)) {
+          selectedGenre.forEach((id, idx) => {
+            if (id == genre.id) {
+              selectedGenre.splice(idx, 1);
+            }
+          });
+        } else {
+          selectedGenre.push(genre.id);
+        }
+      }
+      console.log(selectedGenre);
+      getMovies(API_URL + "&with_genres=" + encodeURI(selectedGenre.join(",")));
+      highlightSelection();
+    });
+    tagsEl.append(t);
+  });
 }
-
 
 function highlightSelection() {
-  const tags = document.querySelectorAll('.tag');
-  tags.forEach(tag => {
-      tag.classList.remove('highlight')
-  })
-  clearBtn()
-  if(selectedGenre.length !=0){   
-      selectedGenre.forEach(id => {
-          const hightlightedTag = document.getElementById(id);
-          hightlightedTag.classList.add('highlight');
-      })
+  const tags = document.querySelectorAll(".tag");
+  tags.forEach((tag) => {
+    tag.classList.remove("highlight");
+  });
+  clearBtn();
+  if (selectedGenre.length != 0) {
+    selectedGenre.forEach((id) => {
+      const hightlightedTag = document.getElementById(id);
+      hightlightedTag.classList.add("highlight");
+    });
   }
-
 }
 
-// clear the movies filter 
-function clearBtn(){
-  let clearBtn = document.getElementById('clear');
-  if(clearBtn){
-      clearBtn.classList.add('highlight')
-  }else{
-          
-      let clear = document.createElement('div');
-      clear.classList.add('tag','highlight');
-      clear.id = 'clear';
-      clear.innerText = 'Clear x';
-      clear.addEventListener('click', () => {
-          selectedGenre = [];
-          setGenre();            
-          getMovies(API_URL);
-      })
-      tagsEl.append(clear);
+// clear the movies filter
+function clearBtn() {
+  let clearBtn = document.getElementById("clear");
+  if (clearBtn) {
+    clearBtn.classList.add("highlight");
+  } else {
+    let clear = document.createElement("div");
+    clear.classList.add("tag", "highlight");
+    clear.id = "clear";
+    clear.innerText = "Clear x";
+    clear.addEventListener("click", () => {
+      selectedGenre = [];
+      setGenre();
+      getMovies(API_URL);
+    });
+    tagsEl.append(clear);
   }
-  
 }
 
 getMovies(API_URL);
 
-// get the movies 
+// get the movies
 function getMovies(url) {
-lastUrl = url;
-  axios.get(url).then(function (response){
-      console.log(response.data.results)
-      if(response.data.results.length !== 0){
-          showMovies(response.data.results);
-          currentPage = response.data.page;
-          nextPage = currentPage + 1;
-          prevPage = currentPage - 1;
-          totalPages = response.data.total_pages;
+  lastUrl = url;
+  axios.get(url).then(function (response) {
+    console.log(response.data.results);
+    if (response.data.results.length !== 0) {
+      showMovies(response.data.results);
+      currentPage = response.data.page;
+      nextPage = currentPage + 1;
+      prevPage = currentPage - 1;
+      totalPages = response.data.total_pages;
 
-          current.innerText = currentPage;
+      current.innerText = currentPage;
 
-          if(currentPage <= 1){
-            prev.classList.add('disabled');
-            next.classList.remove('disabled')
-          }else if(currentPage>= totalPages){
-            prev.classList.remove('disabled');
-            next.classList.add('disabled')
-          }else{
-            prev.classList.remove('disabled');
-            next.classList.remove('disabled')
-          }
-
-          tagsEl.scrollIntoView({behavior : 'smooth'})
-
-      }else{
-          main.innerHTML= `<h1 class="no-results">No Results Found</h1>`
+      if (currentPage <= 1) {
+        prev.classList.add("disabled");
+        next.classList.remove("disabled");
+      } else if (currentPage >= totalPages) {
+        prev.classList.remove("disabled");
+        next.classList.add("disabled");
+      } else {
+        prev.classList.remove("disabled");
+        next.classList.remove("disabled");
       }
-     
-  })
 
+      tagsEl.scrollIntoView({ behavior: "smooth" });
+    } else {
+      main.innerHTML = `<h1 class="no-results">No Results Found</h1>`;
+    }
+  });
 }
 
 // display the movies on the screen
 function showMovies(data) {
-  main.innerHTML = '';
+  main.innerHTML = "";
 
-  data.forEach(movie => {
-      const {title, poster_path, vote_average, overview, id} = movie;
-      const movieEl = document.createElement('div');
-      movieEl.classList.add('movie');
-      movieEl.innerHTML = `
-           <img src="${poster_path? IMG_URL+poster_path: "http://via.placeholder.com/1080x1580" }" alt="${title}">
+  data.forEach((movie) => {
+    const { title, poster_path, vote_average, overview, id } = movie;
+    const movieEl = document.createElement("div");
+    movieEl.classList.add("movie");
+    movieEl.innerHTML = `
+           <img src="${
+             poster_path
+               ? IMG_URL + poster_path
+               : "http://via.placeholder.com/1080x1580"
+           }" alt="${title}">
 
           <div class="movie-info">
               <h3>${title}</h3>
@@ -269,117 +262,114 @@ function showMovies(data) {
             
 
           </div>
-      `
+      `;
 
-      main.appendChild(movieEl);
+    main.appendChild(movieEl);
 
-      document.getElementById(id).addEventListener('click', () => {
-        console.log(id)
-        openNav(movie)
-      })
-    
-
-  })
+    document.getElementById(id).addEventListener("click", () => {
+      console.log(id);
+      openNav(movie);
+    });
+  });
 }
 
 // the movie trailer functions
-const overlayContent = document.getElementById('overlay-content');
+const overlayContent = document.getElementById("overlay-content");
 /* Open when someone clicks on the span element */
 function openNav(movie) {
   let id = movie.id;
-  axios.get(BASE_URL + '/movie/'+id+'/videos?'+API_KEY).then(function(response){
-    
-    if(response.data.results){
-      document.getElementById("myNav").style.width = "100%";
-      if(response.data.results.length > 0){
-        var embed = [];
-        var dots = [];
-        response.data.results.forEach((video, idx) => {
-          let {name, key, site} = video
-// check weather the site is youtube or not and the no of video should be less than 4
-          if(site == 'YouTube' && embed.length <= 3){
-              
-            embed.push(`
+  axios
+    .get(BASE_URL + "/movie/" + id + "/videos?" + API_KEY)
+    .then(function (response) {
+      if (response.data.results) {
+        document.getElementById("myNav").style.width = "100%";
+        if (response.data.results.length > 0) {
+          var embed = [];
+          var dots = [];
+          response.data.results.forEach((video, idx) => {
+            let { name, key, site } = video;
+            // check weather the site is youtube or not and the no of video should be less than 4
+            if (site == "YouTube" && embed.length <= 3) {
+              embed.push(`
               <iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}"
                class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
                 gyroscope; picture-in-picture" allowfullscreen></iframe>
           
-          `)
+          `);
 
-            dots.push(`
+              dots.push(`
               <span class="dot">${idx + 1}</span>
-            `)
-          }
-        })
-        
-        var content = `
+            `);
+            }
+          });
+
+          var content = `
         <h1 class="no-results">${movie.original_title}</h1>
         <br/>
         <p>${movie.overview}</p>
         <br>
-        ${embed.join('')}
+        ${embed.join("")}
         <br/>
-        <div class="dots">${dots.join('')}</div>
+        <div class="dots">${dots.join("")}</div>
         <br>
         <button class="links"><i class="far fa-heart" id="favorite" ></i></button>
         <button class="links"><i class="far fa-clock" id="watchLater" ></i></button>
-        `
-        overlayContent.innerHTML = content;
-        activeSlide=0;
-        showVideos();
-      }else{
-        overlayContent.innerHTML = `<h1 class="no-results">No Results Found</h1>`
+        `;
+          overlayContent.innerHTML = content;
+          activeSlide = 0;
+          showVideos();
+        } else {
+          overlayContent.innerHTML = `<h1 class="no-results">No Results Found</h1>`;
+        }
+
+        document.querySelector("#favorite").addEventListener("click", () => {
+          console.log(id);
+          console.log(movie);
+
+          if (!favMovie.includes(id) || favMovie == []) {
+            favMovie.push(id);
+
+            localStorage.setItem("myfav", JSON.stringify(favMovie));
+          }
+        });
+        document.querySelector("#watchLater").addEventListener("click", () => {
+          console.log(id);
+          console.log(movie);
+          if (!watch.includes(id) || watch == []) {
+            watch.push(id);
+            localStorage.setItem("later", JSON.stringify(watch));
+          }
+          console.log(watch);
+        });
       }
-
-      document.querySelector("#favorite").addEventListener('click', () => {
-        console.log(id);
-        console.log(movie);
-     
-        if(!favMovie.includes(id) || favMovie ==[]){
-          favMovie.push(id);
-          
-          localStorage.setItem('myfav', JSON.stringify(favMovie));
-
-        }
-        
-       
-      })
-      document.querySelector("#watchLater").addEventListener('click', () => {
-        console.log(id);
-        console.log(movie);
-        if(!watch.includes(id) || watch ==[]){
-          watch.push(id);
-          localStorage.setItem('later', JSON.stringify(watch));
-          
-        }
-        console.log(watch);
-      })
-    }
-  })
+    });
 }
 
-
-function getwatch(){
+function getwatch() {
   // Retrieve the array from local storage
-  var array = localStorage.getItem('watch');
-// Parse it to something usable in js
+  var array = localStorage.getItem("watch");
+  // Parse it to something usable in js
   array = JSON.parse(array);
-  if(!array.length == 0){
+  if (!array.length == 0) {
     showWatchmovie(array);
-  }else {
-    array =[];
+  } else {
+    array = [];
   }
 }
 
-function showWatchmovie(array){
+function showWatchmovie(array) {
   const container = document.getElementById("watchmain");
- //container.innerHTML =``;
-  array.forEach(movie => {
-      const {title, poster_path, vote_average, overview, id} = movie;
-      const movieEl = document.createElement('div');
-      movieEl.classList.add('movie');
-      movieEl.innerHTML = `
-           <img src="${poster_path? IMG_URL+poster_path: "http://via.placeholder.com/1080x1580" }" alt="${title}">
+  //container.innerHTML =``;
+  array.forEach((movie) => {
+    const { title, poster_path, vote_average, overview, id } = movie;
+    const movieEl = document.createElement("div");
+    movieEl.classList.add("movie");
+    movieEl.innerHTML = `
+           <img src="${
+             poster_path
+               ? IMG_URL + poster_path
+               : "http://via.placeholder.com/1080x1580"
+           }" alt="${title}">
 
           <div class="movie-info">
               <h3>${title}</h3>
@@ -392,17 +382,15 @@ function showWatchmovie(array){
               <br/> 
               <button class="know-more" id="${id}">Know More</button>
           </div>
-      `
+      `;
 
-      container.appendChild(movieEl);
+    container.appendChild(movieEl);
 
-      document.getElementById(id).addEventListener('click', () => {
-        console.log(id)
-        openNav(movie)
-      })
-    
-
-  })
+    document.getElementById(id).addEventListener("click", () => {
+      console.log(id);
+      openNav(movie);
+    });
+  });
 }
 
 /* Close when someone clicks on the "x" symbol inside the overlay */
@@ -412,112 +400,103 @@ function closeNav() {
 var activeSlide = 0;
 var totalVideos = 0;
 
-function showVideos(){
-  let embedClasses = document.querySelectorAll('.embed');
-  let dots = document.querySelectorAll('.dot');
+function showVideos() {
+  let embedClasses = document.querySelectorAll(".embed");
+  let dots = document.querySelectorAll(".dot");
 
-  totalVideos = embedClasses.length; 
+  totalVideos = embedClasses.length;
   embedClasses.forEach((embedTag, idx) => {
-    if(activeSlide == idx){
-      embedTag.classList.add('show')
-      embedTag.classList.remove('hide')
-
-    }else{
-      embedTag.classList.add('hide');
-      embedTag.classList.remove('show')
+    if (activeSlide == idx) {
+      embedTag.classList.add("show");
+      embedTag.classList.remove("hide");
+    } else {
+      embedTag.classList.add("hide");
+      embedTag.classList.remove("show");
     }
-  })
+  });
 
   dots.forEach((dot, indx) => {
-    if(activeSlide == indx){
-      dot.classList.add('active');
-    }else{
-      dot.classList.remove('active')
+    if (activeSlide == indx) {
+      dot.classList.add("active");
+    } else {
+      dot.classList.remove("active");
     }
-  })
+  });
 }
 
-const leftArrow = document.getElementById('left-arrow')
-const rightArrow = document.getElementById('right-arrow')
+const leftArrow = document.getElementById("left-arrow");
+const rightArrow = document.getElementById("right-arrow");
 
-leftArrow.addEventListener('click', () => {
-  if(activeSlide > 0){
+leftArrow.addEventListener("click", () => {
+  if (activeSlide > 0) {
     activeSlide--;
-  }else{
-    activeSlide = totalVideos -1;
+  } else {
+    activeSlide = totalVideos - 1;
   }
 
-  showVideos()
-})
+  showVideos();
+});
 
-rightArrow.addEventListener('click', () => {
-  if(activeSlide < (totalVideos -1)){
+rightArrow.addEventListener("click", () => {
+  if (activeSlide < totalVideos - 1) {
     activeSlide++;
-  }else{
+  } else {
     activeSlide = 0;
   }
-  showVideos()
-})
+  showVideos();
+});
 
 // for the rating
 function getColor(vote) {
-  if(vote>= 8){
-      return 'green'
-  }else if(vote >= 5){
-      return "orange"
-  }else{
-      return 'red'
+  if (vote >= 8) {
+    return "green";
+  } else if (vote >= 5) {
+    return "orange";
+  } else {
+    return "red";
   }
 }
 
 // search function
-form.addEventListener('submit', (e) => {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const searchTerm = search.value;
-  selectedGenre=[];
+  selectedGenre = [];
   setGenre();
-  if(searchTerm) {
-      getMovies(searchURL+'&query='+searchTerm)
-  }else{
-      getMovies(API_URL);
+  if (searchTerm) {
+    getMovies(searchURL + "&query=" + searchTerm);
+  } else {
+    getMovies(API_URL);
   }
-
-})
+});
 
 // the pagination functions
-prev.addEventListener('click', () => {
-if(prevPage > 0){
-  pageCall(prevPage);
+prev.addEventListener("click", () => {
+  if (prevPage > 0) {
+    pageCall(prevPage);
+  }
+});
+
+next.addEventListener("click", () => {
+  if (nextPage <= totalPages) {
+    pageCall(nextPage);
+  }
+});
+
+function pageCall(page) {
+  let urlSplit = lastUrl.split("?");
+  let queryParams = urlSplit[1].split("&");
+  let key = queryParams[queryParams.length - 1].split("=");
+  if (key[0] != "page") {
+    let url = lastUrl + "&page=" + page;
+    getMovies(url);
+  } else {
+    key[1] = page.toString();
+    let a = key.join("=");
+    queryParams[queryParams.length - 1] = a;
+    let b = queryParams.join("&");
+    let url = urlSplit[0] + "?" + b;
+    getMovies(url);
+  }
 }
-})
-
-next.addEventListener('click', () => {
-if(nextPage <= totalPages){
-  pageCall(nextPage);
-}
-})
-
-function pageCall(page){
-let urlSplit = lastUrl.split('?');
-let queryParams = urlSplit[1].split('&');
-let key = queryParams[queryParams.length -1].split('=');
-if(key[0] != 'page'){
-  let url = lastUrl + '&page='+page
-  getMovies(url);
-}else{
-  key[1] = page.toString();
-  let a = key.join('=');
-  queryParams[queryParams.length -1] = a;
-  let b = queryParams.join('&');
-  let url = urlSplit[0] +'?'+ b
-  getMovies(url);
-}
-}
-
-
-
-
-
-
-
